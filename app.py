@@ -180,7 +180,7 @@ app.layout = html.Div([
 
      # Image
     html.Div([
-        html.Img(src='/static/image/sport.jpg', style={'width': '35%', 'display': 'block', 'margin': 'auto'})
+        html.Img(id='image-div', src='/static/image/sport.jpg', style={'width': '35%', 'display': 'block', 'margin': 'auto'})
     ], style={'marginBottom': '30px'}),
     
 ])
@@ -397,6 +397,25 @@ def update_concurrent_events_plot(selected_month):
     )
 
     return heatmap_fig
+# Callback to update image display based on button clicks
+@app.callback(
+    Output('image-div', 'style'),
+    [Input('btn-geo', 'n_clicks'),
+     Input('btn-engagement', 'n_clicks'),
+     Input('btn-gender', 'n_clicks'),
+     Input('btn-preferences', 'n_clicks'),
+     Input('btn-navigation', 'n_clicks'),
+     Input('btn-concurrent', 'n_clicks')]
+)
+def toggle_image_display(btn_geo, btn_engagement, btn_gender, btn_preferences, btn_navigation, btn_concurrent):
+    # Determine which button was clicked
+    clicked_button = dash.callback_context.triggered[0]['prop_id'].split('.')[0]
+    
+    # Hide the image div if any button other than landing page buttons is clicked
+    if clicked_button in ['btn-geo', 'btn-engagement', 'btn-gender', 'btn-preferences', 'btn-navigation', 'btn-concurrent']:
+        return {'display': 'none'}
+    else:
+        return {'width': '35%', 'display': 'block', 'margin': 'auto'}
 
 if __name__ == '__main__':
     app.run_server(host='0.0.0.0', port=8080, debug=True)
