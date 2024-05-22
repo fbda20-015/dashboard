@@ -26,6 +26,7 @@ sporting_events = df['Sport Viewed'].unique()
 
 # Create Dash app
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
+server = app.server
 
 # Define CSS styles for buttons
 app.index_string = '''
